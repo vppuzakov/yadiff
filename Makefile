@@ -2,7 +2,6 @@
 
 lint:
 	@cargo fmt -- --check
-	@cargo check
 	@cargo clippy
 
 build:
