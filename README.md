@@ -7,6 +7,6 @@ Yandex Disk Diff Tool.
 ## Usage
 
 ```bash
-$ yadiff <local> <remote>
+$ yadiff -l <local> -r <remote> --token <token>
 The files are equal.
 ```
