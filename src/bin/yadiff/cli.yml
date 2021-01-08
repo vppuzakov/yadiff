@@ -1,0 +1,19 @@
+name: yadiff
+version: "0.1"
+author: Vladimir Puzakov <vppuzakov@gmail.com>
+about: Yandex Disk diff tool
+args:
+  - remote:
+      short: r
+      long: remote
+      value_name: RESOURCE
+      help: Resource at Yandex Disk
+      takes_value: true
+      required: true
+  - local:
+      short: l
+      long: local
+      value_name: PATH
+      help: Local path
+      takes_value: true
+      required: true
