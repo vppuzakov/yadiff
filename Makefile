@@ -7,7 +7,7 @@ lint:
 	@cargo clippy
 
 audit:
-	@cargo audit
+	@cargo audit --ignore RUSTSEC-2018-0006
 
 check: lint audit
 
