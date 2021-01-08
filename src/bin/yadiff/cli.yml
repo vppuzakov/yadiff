@@ -17,3 +17,9 @@ args:
       help: Local path
       takes_value: true
       required: true
+  - token:
+      long: token
+      value_name: TOKEN
+      help: Token to Yandex Disk
+      takes_value: true
+      required: true
