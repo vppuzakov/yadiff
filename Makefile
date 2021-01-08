@@ -1,10 +1,15 @@
-.phony: lint build run docs
+.phony: lint audit check build run docs
 
 -include .env
 
 lint:
 	@cargo fmt -- --check
 	@cargo clippy
+
+audit:
+	@cargo audit
+
+check: lint audit
 
 build:
 	@cargo build --release
