@@ -23,6 +23,7 @@ pub struct Resource {
     pub name: String,
     pub created: DateTime<FixedOffset>,
     pub modified: DateTime<FixedOffset>,
+    pub path: String,
 
     #[serde(alias = "type")]
     pub category: Categories,

@@ -7,8 +7,10 @@ mod config;
 #[tokio::main]
 async fn main() -> Result<(), Error> {
     let config = Config::new();
-    let resource = get_all_files(&config.token, &config.remote, config.window).await?;
+    let files = get_all_files(&config.token, &config.remote, config.window).await?;
 
-    println!("{:?}", resource);
+    for file in files {
+        println!("{:?}", file.path);
+    }
     Ok(())
 }
