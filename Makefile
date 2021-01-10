@@ -15,7 +15,10 @@ build:
 	@cargo build --release
 
 run:
-	@target/release/yadiff --local ${YADIFF_PATH} --remote ${YADIFF_REMOTE} --token ${YADIFF_TOKEN}
+	@target/release/yadiff --local ${YADIFF_PATH} \
+	                       --remote ${YADIFF_REMOTE} \
+						   --token ${YADIFF_TOKEN} \
+						   --window ${YADIFF_LIMIT}
 
 docs:
 	@cargo doc --open

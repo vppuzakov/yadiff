@@ -23,3 +23,10 @@ args:
       help: Token to Yandex Disk
       takes_value: true
       required: true
+  - window:
+      long: window
+      value_name: SIZE
+      help: Yandex Disk window limit
+      default_value: "20"
+      takes_value: true
+      required: false
