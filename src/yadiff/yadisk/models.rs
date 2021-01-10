@@ -25,6 +25,9 @@ pub struct Resource {
     pub modified: DateTime<FixedOffset>,
     pub path: String,
 
+    pub sha256: Option<String>,
+    pub size: Option<u64>,
+
     #[serde(alias = "type")]
     pub category: Categories,
 
