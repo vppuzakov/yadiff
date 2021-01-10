@@ -5,7 +5,12 @@ use reqwest::Error;
 use super::Categories;
 use super::Resource;
 
-pub async fn get_resource(token: &String, path: &String, limit: u32, offset: u32) -> Result<Resource, Error> {
+pub async fn get_resource(
+    token: &String,
+    path: &String,
+    limit: u32,
+    offset: u32,
+) -> Result<Resource, Error> {
     let client = reqwest::Client::new();
 
     let request_url = format!(
@@ -28,7 +33,12 @@ pub async fn get_resource(token: &String, path: &String, limit: u32, offset: u32
 }
 
 #[async_recursion]
-pub async fn get_all_files(token: &String, path: &String, limit: u32) -> Result<Vec<Resource>, Error> {
+pub async fn get_all_files(
+    token: &String,
+    path: &String,
+    limit: u32,
+    parent: &String,
+) -> Result<Vec<Resource>, Error> {
     let mut files: Vec<Resource> = Vec::new();
     let mut offset = 0;
 
@@ -39,12 +49,14 @@ pub async fn get_all_files(token: &String, path: &String, limit: u32) -> Result<
     while offset < total {
         folder = get_resource(&token, &path, limit, offset).await?;
         embedded = folder.embedded.unwrap();
-        for item in embedded.items {
+        for mut item in embedded.items {
             if let Categories::FILE = item.category {
+                item.fixpath(&parent);
                 files.push(item);
             } else {
-                let children = get_all_files(token, &item.path, limit).await?;
-                for file in children {
+                let children = get_all_files(token, &item.path, limit, &parent).await?;
+                for mut file in children {
+                    file.fixpath(&parent);
                     files.push(file);
                 }
             }
