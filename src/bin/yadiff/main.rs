@@ -1,5 +1,6 @@
 use config::Config;
 use reqwest::Error;
+use yadiff::diff;
 use yadiff::filescanner;
 use yadiff::yadisk::get_all_files;
 
@@ -8,17 +9,21 @@ mod config;
 #[tokio::main]
 async fn main() -> Result<(), Error> {
     let config = Config::new();
-    let files = get_all_files(&config.token, &config.remote, config.window, &config.remote).await?;
+    let resources = get_all_files(&config.token, &config.remote, config.window).await?;
+
+    let ya_files = diff::from_yadisk(resources, &config.remote);
 
     println!("\nremote files:");
-    for file in files {
-        println!("{:?}", file.path);
+    for file in ya_files {
+        println!("{:?} {:?}", file.path, file.sha256);
     }
 
-    let localfiles = filescanner::get_all_files(&config.local);
+    let localpaths = filescanner::get_all_files(&config.local);
+    let localfiles = diff::from_local(localpaths, &config.local);
+
     println!("\nlocal files:");
     for file in localfiles {
-        println!("{:?}", file.path);
+        println!("{:?} {:?}", file.path, file.sha256);
     }
     Ok(())
 }
