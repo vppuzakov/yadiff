@@ -12,21 +12,21 @@ pub enum Categories {
 
 #[derive(Deserialize, Debug)]
 pub struct Embedded {
-    items: Vec<Resource>,
-    limit: u16,
-    offset: u16,
-    total: u16,
+    pub items: Vec<Resource>,
+    pub limit: u16,
+    pub offset: u32,
+    pub total: u32,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct Resource {
-    name: String,
-    created: DateTime<FixedOffset>,
-    modified: DateTime<FixedOffset>,
+    pub name: String,
+    pub created: DateTime<FixedOffset>,
+    pub modified: DateTime<FixedOffset>,
 
     #[serde(alias = "type")]
-    category: Categories,
+    pub category: Categories,
 
     #[serde(alias = "_embedded")]
-    embedded: Option<Embedded>,
+    pub embedded: Option<Embedded>,
 }
