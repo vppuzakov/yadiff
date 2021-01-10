@@ -1,7 +1,8 @@
 use reqwest::header::{ACCEPT, AUTHORIZATION, USER_AGENT};
 use reqwest::Error;
 
-use crate::yadisk::models::Resource;
+use super::Categories;
+use super::Resource;
 
 pub async fn get_resource(token: &String, path: &String, limit: u32, offset: u32) -> Result<Resource, Error> {
     let client = reqwest::Client::new();
@@ -37,7 +38,9 @@ pub async fn get_all_files(token: &String, path: &String, limit: u32) -> Result<
         folder = get_resource(&token, &path, limit, offset).await?;
         embedded = folder.embedded.unwrap();
         for item in embedded.items {
-            files.push(item);
+            if let Categories::FILE = item.category {
+                files.push(item);
+            }
         }
         offset += limit;
     }
