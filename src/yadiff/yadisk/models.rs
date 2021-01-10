@@ -31,3 +31,10 @@ pub struct Resource {
     #[serde(alias = "_embedded")]
     pub embedded: Option<Embedded>,
 }
+
+impl Resource {
+    pub fn fixpath(&mut self, parent: &String) {
+        let disk = "disk:/".to_string() + parent;
+        self.path = str::replace(&self.path, &disk, "");
+    }
+}
