@@ -1,3 +1,4 @@
+use async_recursion::async_recursion;
 use reqwest::header::{ACCEPT, AUTHORIZATION, USER_AGENT};
 use reqwest::Error;
 
@@ -26,6 +27,7 @@ pub async fn get_resource(token: &String, path: &String, limit: u32, offset: u32
     Ok(resource)
 }
 
+#[async_recursion]
 pub async fn get_all_files(token: &String, path: &String, limit: u32) -> Result<Vec<Resource>, Error> {
     let mut files: Vec<Resource> = Vec::new();
     let mut offset = 0;
@@ -40,6 +42,11 @@ pub async fn get_all_files(token: &String, path: &String, limit: u32) -> Result<
         for item in embedded.items {
             if let Categories::FILE = item.category {
                 files.push(item);
+            } else {
+                let children = get_all_files(token, &item.path, limit).await?;
+                for file in children {
+                    files.push(file);
+                }
             }
         }
         offset += limit;
