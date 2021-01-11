@@ -14,7 +14,7 @@ async fn main() -> Result<(), Error> {
     let ya_files = diff::from_yadisk(resources, &config.remote);
 
     println!("\nremote files:");
-    for file in ya_files {
+    for file in ya_files.iter() {
         println!("{:?} {:?}", file.path, file.sha256);
     }
 
@@ -22,8 +22,12 @@ async fn main() -> Result<(), Error> {
     let localfiles = diff::from_local(localpaths, &config.local);
 
     println!("\nlocal files:");
-    for file in localfiles {
+    for file in localfiles.iter() {
         println!("{:?} {:?}", file.path, file.sha256);
     }
+
+    println!("\n find diff:");
+    diff::find_diff(&ya_files, &localfiles);
+
     Ok(())
 }

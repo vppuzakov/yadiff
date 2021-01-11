@@ -1,4 +1,4 @@
-use std::fs;
+use std::{collections::HashMap, fs};
 
 use hex::encode;
 use ring::digest;
@@ -39,4 +39,30 @@ pub fn from_local(filepaths: Vec<filescanner::Resource>, parent: &String) -> Vec
     }
 
     files
+}
+
+pub fn find_diff(yadisk: &Vec<File>, local: &Vec<File>) {
+    let mut yadisk_map = HashMap::new();
+    for file in yadisk.iter() {
+        yadisk_map.insert(&file.sha256, file);
+    }
+
+    let mut local_map = HashMap::new();
+    for file in local {
+        local_map.insert(&file.sha256, file);
+    }
+
+    for file in yadisk.iter() {
+        match local_map.get(&file.sha256) {
+            None => println!("not found locally: {}", file.path),
+            Some(&localfile) => println!("equal: {} == {}", file.path, localfile.path),
+        }
+    }
+
+    for file in local.iter() {
+        match yadisk_map.get(&file.sha256) {
+            None => println!("not found on  yandex: {}", file.path),
+            _ => (),
+        }
+    }
 }
